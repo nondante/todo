@@ -1,50 +1,54 @@
+var colors = [
+  "#ff7373",
+  "#ffc0cb",
+  "#b0e0e6",
+  "#fa8072",
+  "#20b2aa",
+  "#c39797",
+  "#c0d6e4",
+  "#ff4040"
+];
 
-var ul = document.getElementsByTagName("ul")[0];
-var li = document.querySelectorAll("li");
-$("input").keypress(function(e){
-  if(e.which === 13){
-    $("ul").append("<li class='list-item'><img src='https://cdn3.iconfinder.com/data/icons/computer-network-icons/512/Trash_Bin-512.png' alt=''>"+$("input").val()+"</li>");
-    $("input").val("");
-  }
+$(document).on('keypress',function(){
+  var circle = document.createElement("div");
+  $(circle).addClass("circle");
+  $(circle).css("top",getRandomTop());
+  $(circle).css("left",getRandomLeft());
+
+  var size = getRandomSize();
+  $(circle).css("width",size);
+  $(circle).css("height",size);
+
+  var color = getRandomColor(colors);
+  $(circle).css("background-color",colors[color]);
+
+  $(".container").append(circle);
+
 });
 
-
-$(document).on("mouseover",".list-item",function(){
-  $(this).children("img").addClass("animated");
-  $(this).children("img").addClass("faster");
-  $(this).children("img").addClass("slideInLeft");
-  $(this).children("img").css("visibility","visible");
+$(document).on('animationend',".circle",function(){
+  $(this).remove();
 });
 
-$(document).on("mouseleave",".list-item",function(){
-  $(this).children("img").removeClass("animated");
-  $(this).children("img").removeClass("slideInLeft");
-  $(this).children("img").css("visibility","hidden");
-});
+function getRandomTop(){
+  var windowHeight = $(window).height() - 200;
+  var randomHeight = Math.random() * (windowHeight - 5) + 5;
+  return randomHeight
+}
 
-$(document).on("click",".list-item",function(){
-  $(this).toggleClass("crossed");
-});
+function getRandomLeft(){
+  var windowWidth = $(window).width() - 200;
+  var randomWidth = Math.random() * (windowWidth - 5) + 5;
+  return randomWidth
+}
 
-$(document).on("click","li img", function(){
-  $(this).parent().fadeOut(300,function(){
-    $(this).remove();
-  });
-});
+function getRandomSize(){
+  var randomSize = Math.random() * (500 - 100) + 100;
+  return randomSize
+}
 
-$("input").on("focus", function(){
-  $(this).val("");
-});
-
-$("input").on("blur", function(){
-  $(this).val("Add New ToDo");
-});
-
-$(document).on("click",".plus",function(){
-  var input = $("input");
-  if(input.css("display") ==="block"){
-    input.fadeOut();
-  } else {
-    input.fadeIn();
-  }
-});
+function getRandomColor(arr){
+  var randomColorIndex = Math.floor(Math.random() * (arr.length-1));
+  console.log(randomColorIndex);
+  return randomColorIndex;
+}
